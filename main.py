@@ -36,9 +36,10 @@ def main(cfg):
     else:
         save_path = os.path.join(cfg.model_path, cfg.dataset, f'TE{cfg.arch}_{str(cfg.exp_num)}')
 
-        datasets = ['DUTS', 'DUT-O', 'HKU-IS', 'ECSSD', 'PASCAL-S']
+#         datasets = ['DUTS', 'DUT-O', 'HKU-IS', 'ECSSD', 'PASCAL-S']
+        datasets = cfg.dataset
         for dataset in datasets:
-            cfg.dataset = dataset
+#             cfg.dataset = dataset
             Tester(cfg, save_path).test()
 
 #             print(f'Test Loss:{test_loss:.3f} | MAX_F:{test_maxf:.4f} '
