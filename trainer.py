@@ -231,8 +231,8 @@ class Tester():
 
         self.criterion = Criterion(args)
 
-        te_img_folder = os.path.join(args.data_path, args.dataset, 'Test/images/')
-        te_gt_folder = os.path.join(args.data_path, args.dataset, 'Test/masks/')
+        te_img_folder = args.data_path
+        te_gt_folder = None
         self.test_loader = get_loader(te_img_folder, te_gt_folder, edge_folder=None, phase='test',
                                       batch_size=args.batch_size, shuffle=False,
                                       num_workers=args.num_workers, transform=self.test_transform)
@@ -249,7 +249,7 @@ class Tester():
         test_s_m = AvgMeter()
         t = time.time()
 
-        Eval_tool = Evaluation_metrics(self.args.dataset, self.device)
+#         Eval_tool = Evaluation_metrics(self.args.dataset, self.device)
 
         with torch.no_grad():
             for i, (images, masks, original_size, image_name) in enumerate(tqdm(self.test_loader)):
