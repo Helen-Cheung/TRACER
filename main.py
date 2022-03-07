@@ -39,10 +39,10 @@ def main(cfg):
         datasets = ['DUTS', 'DUT-O', 'HKU-IS', 'ECSSD', 'PASCAL-S']
         for dataset in datasets:
             cfg.dataset = dataset
-            test_loss, test_mae, test_maxf, test_avgf, test_s_m = Tester(cfg, save_path).test()
+            Tester(cfg, save_path).test()
 
-            print(f'Test Loss:{test_loss:.3f} | MAX_F:{test_maxf:.4f} '
-                  f'| AVG_F:{test_avgf:.4f} | MAE:{test_mae:.4f} | S_Measure:{test_s_m:.4f}')
+#             print(f'Test Loss:{test_loss:.3f} | MAX_F:{test_maxf:.4f} '
+#                   f'| AVG_F:{test_avgf:.4f} | MAE:{test_mae:.4f} | S_Measure:{test_s_m:.4f}')
 
 
 if __name__ == '__main__':
