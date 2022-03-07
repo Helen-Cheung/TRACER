@@ -252,7 +252,7 @@ class Tester():
 #         Eval_tool = Evaluation_metrics(self.args.dataset, self.device)
 
         with torch.no_grad():
-            for i, (images, masks, original_size, image_name) in enumerate(tqdm(self.test_loader)):
+            for i, (images, original_size, image_name) in enumerate(tqdm(self.test_loader)):
                 images = torch.tensor(images, device=self.device, dtype=torch.float32)
 
                 outputs, edge_mask, ds_map = self.model(images)
