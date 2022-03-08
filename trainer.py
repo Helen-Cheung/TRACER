@@ -270,9 +270,9 @@ class Tester():
                     
                     # Save prediction map
                     if self.args.save_map is not None:
-                        thresh = torch.tensor(200, device = self.device)
+                        thresh = torch.tensor(200.0, device = self.device)
                         output = output * torch.tensor(255.0, device = self.device)
-                        output = torch.where(output.int() < thresh, torch.tensor(254, device=self.device),images)
+                        output = torch.where(output < thresh, torch.tensor(254.0, device=self.device),images)
                         output = (output.squeeze().detach().cpu().numpy()).astype(np.uint8)   # convert uint8 type
                         cv2.imwrite(os.path.join('pred_map', 'exp'+str(self.args.exp_num), self.args.dataset, image_name[i]+'.png'), output)
 
