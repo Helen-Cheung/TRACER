@@ -270,6 +270,7 @@ class Tester():
                     
                     # Save prediction map
                     if self.args.save_map is not None:
+                        output = torch.where(output<[200,200,200],[254,254,254],images)
                         output = (output.squeeze().detach().cpu().numpy()*255.0).astype(np.uint8)   # convert uint8 type
                         cv2.imwrite(os.path.join('pred_map', 'exp'+str(self.args.exp_num), self.args.dataset, image_name[i]+'.png'), output)
 
