@@ -273,13 +273,12 @@ class Tester():
                 
                         os.makedirs("./seg_img/",exist_ok=True)
                     
-                        thresh = torch.tensor(200.0, device = self.device, dtype=torch.float32)
-                        white = torch.tensor(254.0, device=self.device, dtype=torch.float32)
+                        thresh = 200.0
+                        white = 254.0
                         
-                        output = output * torch.tensor(255.0, device = self.device, dtype=torch.float32)
-                        output = torch.where(output < thresh, white, images)
-                        output = (output.squeeze().detach().cpu().numpy()).astype(np.uint8)   # convert uint8 type
-                        cv2.imwrite('./seg_img/' + image_name[i]+'.png', output)
+                        output = (output.squeeze().detach().cpu().numpy()*255.0).astype(np.uint8)   # convert uint8 type
+                        output = np.where(output < thresh, white, images)
+                        cv2.imwrite("./seg_img/" + image_name[i]+'.png'), output)
 
                     # log
 #                     test_loss.update(loss.item(), n=1)
