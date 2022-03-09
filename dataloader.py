@@ -62,6 +62,7 @@ class Test_DatasetGenerate(Dataset):
     def __getitem__(self, idx):
         image_name = Path(self.images[idx]).stem
         image = cv2.imread(self.images[idx])
+        np_image = cv2.imread(self.images[idx])
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         original_size = image.shape[:2]
 
@@ -69,7 +70,7 @@ class Test_DatasetGenerate(Dataset):
             augmented = self.transform(image=image)
             image = augmented['image']
 
-        return image, original_size, image_name
+        return np_image, image, original_size, image_name
 
     def __len__(self):
         return len(self.images)
@@ -83,7 +84,7 @@ def get_loader(img_folder, gt_folder, edge_folder, phase: str, batch_size, shuff
     else:
         dataset = DatasetGenerate(img_folder, gt_folder, edge_folder, phase, transform, seed)
         data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers,
-                                 drop_last=True)
+                                 drop_last=False)
 
     print(f'{phase} length : {len(dataset)}')
 
