@@ -252,33 +252,41 @@ class Tester():
 #         Eval_tool = Evaluation_metrics(self.args.dataset, self.device)
 
         with torch.no_grad():
-            for i, (images, original_size, image_name) in enumerate(tqdm(self.test_loader)):
+            for i, (np_images, images, original_size, image_name) in enumerate(tqdm(self.test_loader)):
                 images = torch.tensor(images, device=self.device, dtype=torch.float32)
+
+                np_images = torch.tensor(np_images, device = self.device, dtype=torch.float32)
 
                 outputs, edge_mask, ds_map = self.model(images)
                 H, W = original_size
 
                 for i in range(images.size(0)):
-#                     mask = gt_to_tensor(masks[i])
+
                     h, w = H[i].item(), W[i].item()
 
                     output = F.interpolate(outputs[i].unsqueeze(0), size=(h, w), mode='bilinear')
-#                     loss = self.criterion(output, mask)
 
-                    # Metric
-#                     mae, max_f, avg_f, s_score = Eval_tool.cal_total_metrics(output, mask)
+                    np_image = np_images[i]
+                    np_image = torch.moveaxis(np_image, -1, 0)
                     
                     # Save prediction map
                     if self.args.save_map is not None:
-                
-                        os.makedirs("./seg_img/",exist_ok=True)
+
+                      os.makedirs("./seg_img/",exist_ok=True)
                     
-                        thresh = 200.0
-                        white = 254.0
-                        
-                        output = (output.squeeze().detach().cpu().numpy()*255.0).astype(np.uint8)   # convert uint8 type
-                        output = np.where(output < thresh, white, images)
-                        cv2.imwrite("./seg_img/" + image_name[i]+'.png'), output)
+                      thresh = torch.tensor(200.0, device = self.device, dtype = torch.float32)
+                      white = torch.tensor(254.0, device = self.device, dtype = torch.float32)
+
+                      output = output.squeeze()*255.0  # convert uint8 type
+
+                      
+                      output.unsqueeze_(0)
+                      output = output.repeat(3, 1, 1)
+                      
+                      output = torch.where(output < thresh, white, np_image)
+                      output = torch.moveaxis(output, 0, -1)
+                      output = (output.detach().cpu().numpy()).astype(np.uint8)
+                      cv2.imwrite("./seg_img/" + image_name[i]+'.png', output)
 
                     # log
 #                     test_loss.update(loss.item(), n=1)
