@@ -67,9 +67,9 @@ class Test_DatasetGenerate(Dataset):
 
         if self.transform is not None:
             augmented = self.transform(image=image)
-            trans_image = augmented['image']
+            image = augmented['image']
 
-        return np_image, image, trans_image, original_size, image_name
+        return np_image, image, original_size, image_name
 
     def __len__(self):
         return len(self.images)
