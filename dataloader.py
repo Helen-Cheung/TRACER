@@ -8,7 +8,6 @@ from albumentations.pytorch.transforms import ToTensorV2
 from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 
-
 class DatasetGenerate(Dataset):
     def __init__(self, img_folder, gt_folder, edge_folder, phase: str = 'train', transform=None, seed=None):
         self.images = sorted(glob.glob(img_folder + '/*'))
@@ -128,6 +127,7 @@ def get_train_augmentation(img_size, ver):
 def get_test_augmentation(img_size):
     transforms = albu.Compose([
         albu.Resize(img_size, img_size, always_apply=True),
+        albu.CLAHE(clip_limit=3.0, tile_grid_size=(24, 32), always_apply=True)
         albu.Normalize([0.485, 0.456, 0.406],
                        [0.229, 0.224, 0.225]),
         ToTensorV2(),
