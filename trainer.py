@@ -254,7 +254,7 @@ class Tester():
         with torch.no_grad():
             for i, (np_images, images, original_size, image_name) in enumerate(tqdm(self.test_loader)):
                 images = torch.tensor(images, device=self.device, dtype=torch.float32)
-
+                
                 np_images = torch.tensor(np_images, device = self.device, dtype=torch.float32)
 
                 outputs, edge_mask, ds_map = self.model(images)
