@@ -272,7 +272,7 @@ class Tester():
                     # Save prediction map
                     if self.args.save_map is not None:
 
-                      os.makedirs(self.args.save_map,exist_ok=True)
+                      os.makedirs(self.args.out_path,exist_ok=True)
                     
                       thresh = torch.tensor(200.0, device = self.device, dtype = torch.float32)
                       white = torch.tensor(254.0, device = self.device, dtype = torch.float32)
@@ -286,7 +286,7 @@ class Tester():
                       output = torch.where(output < thresh, white, np_image)
                       output = torch.moveaxis(output, 0, -1)
                       output = (output.detach().cpu().numpy()).astype(np.uint8)
-                      cv2.imwrite(self.args.save_map + image_name[i]+'.jpg', output)
+                      cv2.imwrite(self.args.out_path + image_name[i]+'.jpg', output)
 
                     # log
 #                     test_loss.update(loss.item(), n=1)
