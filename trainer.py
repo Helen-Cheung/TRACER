@@ -286,7 +286,7 @@ class Tester():
                       output = torch.where(output < thresh, white, np_image)
                       output = torch.moveaxis(output, 0, -1)
                       output = (output.detach().cpu().numpy()).astype(np.uint8)
-                      cv2.imwrite("./seg_img/" + image_name[i]+'.png', output)
+                      cv2.imwrite("./seg_img/" + image_name[i]+'.jpg', output)
 
                     # log
 #                     test_loss.update(loss.item(), n=1)
